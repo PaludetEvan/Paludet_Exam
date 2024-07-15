@@ -216,7 +216,7 @@ export default function Home() {
                   setRichiestaId(item.id)
                   accettaRichiesta()
                 }}>
-                  Assegna
+                  Accetta
                 </button>
                 <button className="btn" style={{ backgroundColor: 'red', marginLeft: '0.3rem' }} onClick={() => eliminaRichiesta(item.id)}>
                   Elimina
