@@ -218,7 +218,7 @@ export default function Home() {
                 }}>
                   Accetta
                 </button>
-                <button className="btn" style={{ backgroundColor: 'red', marginLeft: '0.3rem' }} onClick={() => eliminaRichiesta(item.id)}>
+                <button className="btn alert" onClick={() => eliminaRichiesta(item.id)}>
                   Elimina
                 </button>
               </div>
@@ -244,7 +244,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <button className="btn" style={{ backgroundColor: 'red', marginLeft: '0.3rem' }} onClick={() => eliminaRichiestaAssegnata(item.id)}>
+                <button className="btn alert" onClick={() => eliminaRichiestaAssegnata(item.id)}>
                   Elimina
                 </button>
               </div>

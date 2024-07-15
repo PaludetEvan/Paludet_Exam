@@ -56,7 +56,7 @@ main{
 }
 
 .normal{
-  background-color: #731963;
+  background-color: #008001;
 }
 
 .alert{
@@ -69,7 +69,7 @@ main{
 }
 
 .normal:hover{
-  background-color: #731962db;
+  background-color: #008000db;
 
 }
 
@@ -97,7 +97,7 @@ main{
 }
 
 .form-container form button {
-  background-color: #731963;
+  background-color: #008001;
   width: 6rem;
   padding: 0.7rem 1rem;
   border-radius: 0.5rem;
