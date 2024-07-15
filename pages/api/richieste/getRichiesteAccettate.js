@@ -46,6 +46,12 @@ export default async function Handler(req, res) {
     } catch (error) {
         console.error('Errore nella comunicazione con il db:', error);
         res.status(500).json({ error: 'Errore interno del server' });
+    } finally {
+
+        if (client) {
+            client.release();
+            console.log("DB connection released");
+        }
     }
 
 }

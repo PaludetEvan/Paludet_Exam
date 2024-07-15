@@ -35,7 +35,13 @@ export default async function Handler (req,res) {
         } catch (error) {
           console.error('Errore nella richiesta DELETE:', error);
           return res.status(500).json({ error: 'Errore nel server' });
-        }
+        }finally {
+
+          if (client) {
+              client.release();
+              console.log("DB connection released");
+          }
+      }
       } else {
         res.setHeader('Allow', ['DELETE']);
         res.status(405).end(`Metodo ${req.method} non consentito`);
