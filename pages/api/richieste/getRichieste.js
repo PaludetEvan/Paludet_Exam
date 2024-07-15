@@ -12,7 +12,8 @@ export default async function Handler(req, res) {
     studenti.id AS stud_id,
     studenti.nome AS stud_nome,
     studenti.cognome AS stud_cognome,
-    richieste.descrizione
+    richieste.descrizione,
+    docenti.mod_ricevimento
 
     FROM
     richieste

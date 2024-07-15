@@ -1,13 +1,13 @@
 import pool from '../../../src/config/db.js';
 
 export default async function handler(req, res) {
-    const { docente_id, studente_id, richiesta_id } = req.body;
+    const { docente_id, studente_id, descrizione, data_coll, ora_coll, mod_ricevimento } = req.body;
 
     let client;
     try {
         client = await pool.connect();
-        const queryString = `INSERT INTO richieste_accettate (docente_id, studente_id, richiesta_id) VALUES ($1, $2, $3) RETURNING *`;
-        const values = [docente_id, studente_id, richiesta_id];
+        const queryString = `INSERT INTO richieste_accettate (docente_id, studente_id, descrizione, data_coll, ora_coll, mod_ricevimento) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+        const values = [docente_id, studente_id, descrizione, data_coll, ora_coll, mod_ricevimento];
         const result = await client.query(queryString, values);
 
         res.status(200).json({ success: true, data: result.rows[0] });

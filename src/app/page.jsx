@@ -12,9 +12,17 @@ export default function Home() {
   const [richieste, setRichieste] = useState([{}]);
   const [richiesteAccettate, setRichiesteAccettate] = useState([{}]);
 
-  const [richiesta_id_num, setRichiestaId] = useState();
   const [docente_id_num, setDocenteId] = useState();
   const [studente_id_num, setStudenteId] = useState();
+  const [descrizione, setDescrizione] = useState();
+  const [data_coll, setDataColl] = useState();
+  const [ora_coll, setOraColl] = useState();
+  const [mod_ricevimento, setRicevimento] = useState();
+  const [richiesta_id, setRichiestaId] = useState()
+
+
+
+
 
   useEffect(() => {
     getDocenti();
@@ -25,7 +33,7 @@ export default function Home() {
 
   const getDocenti = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/docenti/getDocenti`);
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/docenti/getDocenti`);
       console.log('Response:', response);
 
       if (response.ok) {
@@ -44,7 +52,7 @@ export default function Home() {
 
   const getStudenti = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/studenti/getStudenti`);
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/studenti/getStudenti`);
       console.log('Response:', response);
 
       if (response.ok) {
@@ -63,7 +71,7 @@ export default function Home() {
 
   const getRichieste = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/richieste/getRichieste`);
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/richieste/getRichieste`);
       console.log('Response:', response);
 
       if (response.ok) {
@@ -83,7 +91,7 @@ export default function Home() {
 
   const getRichiesteAccettate = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/richieste/getRichiesteAccettate`);
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/richieste/getRichiesteAccettate`);
       console.log('Response:', response);
 
       if (response.ok) {
@@ -105,13 +113,12 @@ export default function Home() {
     //e.preventDefault();
     const docente_id = parseInt(docente_id_num);
     const studente_id = parseInt(studente_id_num);
-    const richiesta_id = parseInt(richiesta_id_num);
 
-    const data = { richiesta_id, docente_id, studente_id };
+    const data = { studente_id,docente_id,descrizione,data_coll,ora_coll,mod_ricevimento };
 
     console.log(data);
     try {
-      const response = await fetch(`http://localhost:3000/api/richieste/postRichiesteAccettate`, {
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/richieste/postRichiesteAccettate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -119,7 +126,8 @@ export default function Home() {
       if (response.ok) {
         console.log("Richiesta accettata con successo");
         await getRichiesteAccettate();
-        eliminaRichiesta(richiesta_id)
+        await eliminaRichiesta(richiesta_id);
+        await getRichieste();
       } else {
         console.error("Errore durante l'assegnazione dell'intervento", error);
       }
@@ -131,27 +139,52 @@ export default function Home() {
 
   const eliminaRichiesta = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/richieste/${id}`, {
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/richieste/${id}`, {
         method: 'DELETE',
       });
-  
+
       console.log('Response:', response);
-  
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Errore nella richiesta DELETE: ${response.status} ${response.statusText} - ${errorText}`);
       }
-  
+
       const data = await response.json();
       console.log('Data:', data);
       return data;
-  
+
     } catch (error) {
       console.error('Errore nella richiesta fetch:', error);
       throw error;
     }
   }
-  
+  const eliminaRichiestaAssegnata = async (id) => {
+    try {
+      const response = await fetch(`https://master.dq13sw6xoch1y.amplifyapp.com/api/richieste/assegnate/${id}`, {
+        method: 'DELETE',
+      });
+
+      console.log('Response:', response);
+      if (response.ok){
+        getRichiesteAccettate()
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Errore nella richiesta DELETE: ${response.status} ${response.statusText} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('Data:', data);
+      return data;
+
+    } catch (error) {
+      console.error('Errore nella richiesta fetch:', error);
+      throw error;
+    }
+  }
+
 
   return (
     <main>
@@ -173,10 +206,19 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <button className="btn normal" onClick={() => { setRichiestaId(item.id); setDocenteId(item.doc_id); setStudenteId(item.stud_id); accettaRichiesta() }}>
+                <button className="btn normal" onClick={() => {
+                  setDocenteId(item.doc_id);
+                  setStudenteId(item.stud_id);
+                  setDescrizione(item.descrizione);
+                  setDataColl(item.data_coll);
+                  setOraColl(item.ora_coll);
+                  setRicevimento(item.mod_ricevimento);
+                  setRichiestaId(item.id)
+                  accettaRichiesta()
+                }}>
                   Assegna
                 </button>
-                <button className="btn" style={{backgroundColor:'red',marginLeft:'0.3rem'}} onClick={() => eliminaRichiesta(item.id)}>
+                <button className="btn" style={{ backgroundColor: 'red', marginLeft: '0.3rem' }} onClick={() => eliminaRichiesta(item.id)}>
                   Elimina
                 </button>
               </div>
@@ -199,10 +241,12 @@ export default function Home() {
                   <p>Docente : <strong>{item.doc_nome} {item.doc_cognome}</strong></p>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                <strong>{item.ora_intervento}</strong>
-                <strong>{item.data_intervento}</strong>
+              <div>
+                <button className="btn" style={{ backgroundColor: 'red', marginLeft: '0.3rem' }} onClick={() => eliminaRichiestaAssegnata(item.id)}>
+                  Elimina
+                </button>
               </div>
+
             </div>
           ))}
         </div>

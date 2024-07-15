@@ -4,11 +4,6 @@ export default async function Handler(req, res) {
     const querySelect = `
     SELECT 
     richieste_accettate.id,
-    richieste.data_coll,
-    richieste.ora_coll,
-    richieste.studente_id,
-    richieste.docente_id,
-    richieste.descrizione,
     studenti.nome AS stud_nome,
     studenti.cognome AS stud_cognome,
     docenti.nome AS doc_nome,
@@ -22,15 +17,16 @@ export default async function Handler(req, res) {
     docenti ON richieste_accettate.docente_id = docenti.id
     LEFT JOIN
     studenti ON richieste_accettate.studente_id = studenti.id
-    LEFT JOIN
-    richieste ON richieste_accettate.richiesta_id = richieste.id
 `
     const queryBuilder = `
     CREATE TABLE IF NOT EXISTS richieste_accettate (
     id SERIAL PRIMARY KEY,
-    richiesta_id INTEGER NOT NULL REFERENCES richieste(id),
     studente_id INTEGER NOT NULL REFERENCES studenti(id),
-    docente_id INTEGER NOT NULL REFERENCES docenti(id)
+    docente_id INTEGER NOT NULL REFERENCES docenti(id),
+    descrizione VARCHAR(255) NOT NULL,
+    data_coll DATE NOT NULL,
+    ora_coll TIME NOT NULL,
+    mod_ricevimento VARCHAR(255) NOT NULL
 );
     `
     try {
