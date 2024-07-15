@@ -238,6 +238,7 @@ export default function Home() {
                   <p><strong>{item.descrizione}</strong></p>
                   <p>Data : {item.data_coll}</p>
                   <p>Orario : {item.ora_coll}</p>
+                  <p>Modalità di ricevimento : {item.mod_ricevimento}</p>
                   <p>Docente : <strong>{item.doc_nome} {item.doc_cognome}</strong></p>
                 </div>
               </div>

@@ -4,6 +4,8 @@ export default async function Handler(req, res) {
     const querySelect = `
     SELECT 
     richieste_accettate.id,
+    richieste_accettate.data_coll,
+    richieste_accettate.ora_coll,
     studenti.nome AS stud_nome,
     studenti.cognome AS stud_cognome,
     docenti.nome AS doc_nome,
