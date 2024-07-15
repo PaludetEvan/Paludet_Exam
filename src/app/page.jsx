@@ -21,9 +21,6 @@ export default function Home() {
   const [richiesta_id, setRichiestaId] = useState()
 
 
-
-
-
   useEffect(() => {
     getDocenti();
     getStudenti();
@@ -127,7 +124,7 @@ export default function Home() {
         console.log("Richiesta accettata con successo");
         await getRichiesteAccettate();
         await eliminaRichiesta(richiesta_id);
-        await getRichieste();
+        getRichieste();
       } else {
         console.error("Errore durante l'assegnazione dell'intervento", error);
       }
