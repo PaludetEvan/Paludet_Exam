@@ -239,6 +239,7 @@ export default function Home() {
                   <p>Data : {item.data_coll}</p>
                   <p>Orario : {item.ora_coll}</p>
                   <p>Modalità di ricevimento : {item.mod_ricevimento}</p>
+                  <p>Studente : <strong>{item.stud_nome} {item.stud_cognome}</strong></p>
                   <p>Docente : <strong>{item.doc_nome} {item.doc_cognome}</strong></p>
                 </div>
               </div>
